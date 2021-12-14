@@ -1,0 +1,41 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+.cache/
+
+# dotcnf
+*.cnf
+
+# Docker directories
+docker/*
+!docker/nginx
+!docker/build_files
+!docker/mysql
+
+# Sendgrid
+sendgrid.env
+
+# Django stuff:
+*.log
+local_settings.py
+db.sqlite3
+
+# Celery
+celerybeat-schedule.db
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Database dumps
+dumps/
+
+.vscode
+.idea
+sendgrid.env
