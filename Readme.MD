@@ -30,3 +30,7 @@ backend repository for the attendance manager android application
 4. Install dependencies - `pip3 install -r requirements.txt`
 5. Create a database - `attendance_manager_database`
 6. Create a mysql user and update '.env' with necessary database details
+7. Make migrations - `python3 manage.py makemigrations`
+8. Run migrations - `python3 manage.py migrate`
+9. Run Seeders - `/scripts/refresh_db.sh`
+10. Start server - `python3 manage.py runserver`
