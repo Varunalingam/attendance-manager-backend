@@ -1,4 +1,6 @@
 import logging
+from django.core.serializers import serialize
+from django.db.models.query import QuerySet
 
 from django.http import JsonResponse
 from django.conf import settings
@@ -47,6 +49,8 @@ def regularize_response(response):
             if 'data' not in response:
                 response = {'data': response}
             response['status_code'] = 200
+        if isinstance(response['data'], QuerySet):
+            response['data'] = serialize('json', response['data'])
     else:
         try:
             err_msg = "View returned %s, which is not convertable to JSON"

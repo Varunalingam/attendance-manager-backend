@@ -26,7 +26,8 @@ class Courses(models.Model):
     course_period = models.CharField(max_length=8, choices=CoursePeriod.choices, default=CoursePeriod.Summer)
     course_year = models.DateField(null=False)
 
-    section_id = models.ForeignKey(Section, db_column='section_id', on_delete=models.CASCADE)
+    section_id = models.ForeignKey(Section, db_column='section_id', on_delete=models.DO_NOTHING, null=True, blank=True)
+    department_id = models.ForeignKey(Department, db_column='department_id', on_delete=models.CASCADE)
 
     class CourseType(models.TextChoices):
         Program_Core = 'PC', ('Program Core')
@@ -133,7 +134,7 @@ class TimeTable(models.Model):
         Suspended = 'S', ('Suspended')
         Modified = 'M', ('Modified')
         Active = 'A', ('Active')
-    reciever_type = models.TextField(max_length=2, choices=Status.choices, default=Status.Active)
+    status = models.TextField(max_length=2, choices=Status.choices, default=Status.Active)
 
 class Attendance(models.Model):
     attendance_id = models.AutoField(primary_key=True)

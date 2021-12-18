@@ -1,4 +1,7 @@
 
+from attendance_manager.models import Attendance, TimeTable
+
+
 def successful_response(data):
     response = {
         'status_code':200,
@@ -30,3 +33,7 @@ def unauthorized_response(message = 'Unauthorized. User credentials incorrect.')
     }
 
     return response
+
+def attendance_response(student, course):
+    attendance = Attendance.objects.filter(student_id=student, timetable_id__course_id=course).exclude(timetable_id__status=TimeTable.Status.Suspended).order_by('-timetable_id__starttime')
+    return successful_response(attendance)

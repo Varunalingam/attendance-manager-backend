@@ -1,0 +1,36 @@
+[
+    {
+		"model": "attendance_manager.Courses",
+		"pk": 1,
+		"fields": {
+            "course_id":1,
+            "course_name":"Control Systems 2",
+            "course_code":"ICPC19",
+            "course_period":"Winter",
+            "course_year":"2021-06-1",
+            "section_id":1,
+			      "department_id": 1,
+            "course_type":"PC",
+            "no_of_classes":10,
+            "credits":3,
+            "minimum_attendance_percentage": 0.75
+		  }
+    },
+    {
+      "model": "attendance_manager.Courses",
+      "pk": 2,
+      "fields": {
+              "course_id":2,
+              "course_name":"Control Systems 3",
+              "course_code":"ICPE19",
+              "course_period":"Winter",
+              "course_year":"2021-06-1",
+              "section_id":null,
+              "department_id": 1,
+              "course_type":"PE",
+              "no_of_classes":10,
+              "credits":3,
+              "minimum_attendance_percentage": 0.75
+        }
+      }
+]

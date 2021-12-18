@@ -5,7 +5,6 @@ from attendance_manager.decorators.requires_token import RequiresTokenDecorator
 from attendance_manager.decorators.response import JsonResponseDecorator
 from attendance_manager.helpers.response_helpers import invalid_params_response, successful_response
 
-
 @method_decorator(RequiresTokenDecorator, name='dispatch')
 @method_decorator(JsonResponseDecorator, name='dispatch')
 class UserProfileView(View):
