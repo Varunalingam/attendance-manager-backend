@@ -1,0 +1,10 @@
+[
+    {
+		"model": "attendance_manager.Department",
+		"pk": 1,
+		"fields": {
+			"department_id": 1,
+			"department_name": "Instrumentation and Control Engineering"
+		}
+    }
+]

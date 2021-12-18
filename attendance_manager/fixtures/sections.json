@@ -1,0 +1,12 @@
+[
+    {
+		"model": "attendance_manager.Section",
+		"pk": 1,
+		"fields": {
+			"department_id": 1,
+            "section_id": 1,
+            "section_name": "A",
+            "batch": "2019-06-1"
+		}
+    }
+]

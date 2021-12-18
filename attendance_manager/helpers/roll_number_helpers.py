@@ -35,7 +35,7 @@ def getSectionFromRollNumber(rollnumber):
     section_type = int(rollnumber[6:9])
     batch = getBatchFromRollNumber(rollnumber)
     if (section_type % 2 == 0):
-        return Section.object.get(department = department.department_id, section_name = section_names['even'], batch=batch)
+        return Section.objects.get(department = department.department_id, section_name = section_names['even'], batch=batch)
     else:
-        return Section.object.get(department = department.department_id, section_name = section_names['odd'], batch=batch)
+        return Section.objects.get(department = department.department_id, section_name = section_names['odd'], batch=batch)
 

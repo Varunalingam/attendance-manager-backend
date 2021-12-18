@@ -1,4 +1,6 @@
 from django.db import models
+from django.contrib.auth.models import PermissionsMixin
+from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 
 class Department(models.Model):
     department_id = models.AutoField(primary_key=True)
@@ -39,10 +41,39 @@ class Courses(models.Model):
     credits = models.IntegerField()
     minimum_attendance_percentage = models.FloatField(default=0.75)
 
-class Student(models.Model):
+class UserManager(BaseUserManager):
+    def create_user(self, roll_no, password=""):
+        """
+        Creates and saves a User with the given roll_no and password.
+        """
+        if not roll_no:
+            raise ValueError('Users must have an roll_no address')
+
+        user = self.model(
+            roll_no=roll_no
+        )
+
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+
+    def create_superuser(self, roll_no, password = ""):
+        """
+        Creates and saves a superuser with the given roll_no and password.
+        """
+        user = self.create_user(
+            roll_no=roll_no,
+        )
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+
+
+class Student(AbstractBaseUser):
     student_id = models.AutoField(primary_key=True)
-    roll_no = models.TextField(max_length=9, null=False)
-    name = models.TimeField(max_length=2000, null=True)
+    username = None
+    roll_no = models.CharField(max_length=9, null=False, unique=True)
+    name = models.TextField(max_length=2000, null=True)
     department_id = models.ForeignKey(Department, db_column='department_id', on_delete=models.DO_NOTHING)
     section_id = models.ForeignKey(Section, db_column='section_id', on_delete=models.DO_NOTHING)
     batch = models.DateField()
@@ -51,8 +82,34 @@ class Student(models.Model):
     def save(self, *args, **kwargs):
         self.department_id = getDepartmentFromRollNumber(self.roll_no)
         self.section_id = getSectionFromRollNumber(self.roll_no)
-        self.batch = getBatchFromRollNumber(self.batch)
+        self.batch = getBatchFromRollNumber(self.roll_no)
         super(Student, self).save(*args, **kwargs)
+
+    objects = UserManager()
+
+    USERNAME_FIELD = 'roll_no'
+    REQUIRED_FIELDS = []
+    
+    def get_full_name(self):
+        # The user is identified by their email address
+        return self.roll_no + '@nitt.edu'
+
+    def get_short_name(self):
+        # The user is identified by their email address
+        return self.roll_no
+
+    def __str__(self):
+        return self.roll_no
+
+    def has_perm(self, perm, obj=None):
+        "Does the user have a specific permission?"
+        # Simplest possible answer: Yes, always
+        return True
+
+    def has_module_perms(self, app_label):
+        "Does the user have permissions to view the app `app_label`?"
+        # Simplest possible answer: Yes, always
+        return False
 
 class Notification(models.Model):
     notification_id = models.AutoField(primary_key=True)
@@ -93,5 +150,9 @@ class ClassRepresentative(models.Model):
     rep_of_type = models.TextField(max_length=2, choices=RepType.choices, default=RepType.Course)
     student_id = models.ForeignKey(Student, db_column='student_id', on_delete=models.CASCADE)
 
+class CourseStudents(models.Model):
+    course_student_id = models.AutoField(primary_key=True)
+    student_id = models.ForeignKey(Student, db_column='student_id', on_delete=models.CASCADE)
+    course_id = models.ForeignKey(Courses, db_column='course_id', on_delete=models.CASCADE)
 
     

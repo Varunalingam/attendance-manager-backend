@@ -2,10 +2,11 @@ import math
 import random
 import smtplib
 
+from attendance_manager.models import Student
+from django.utils import timezone
+from datetime import timedelta
+
 def generateOTP() :
- 
-    # Declare a string variable 
-    # which stores all string
     string = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
     OTP = ""
     length = len(string)
@@ -16,6 +17,13 @@ def generateOTP() :
 def sendEmail(message, rollnumber):
     s = smtplib.SMTP('smtp.gmail.com', 587)
     s.starttls()
-    s.login("varunlingam.v@gmail.com", "140801071126@vssvVARUN")
-    s.sendmail("sender_email_id", rollnumber + '@nitt.edu' , message)
+    s.login("akilanforpresident@gmail.com", "Aapr15331")
+    s.sendmail("akilanforpresident@gmail.com", rollnumber + '@nitt.edu' , message)
     s.quit()
+
+def createOTP(roll_number):
+    student = Student.objects.get(roll_no=roll_number)
+    student.otp = generateOTP()
+    student.otp_timeout = timezone.now() + timedelta(minutes=5)
+    student.save()
+    sendEmail(student.otp, student.roll_no)
