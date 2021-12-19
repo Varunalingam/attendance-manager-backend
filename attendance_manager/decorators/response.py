@@ -18,8 +18,8 @@ def exception_response(exception):
     if settings.DEBUG or 1:
         response['data'] = {
             'exception_type': exception.__class__.__name__,
-            'exception_message': str(exception),
-            'exception_description': exception.__doc__
+            'message': str(exception),
+            'description': exception.__doc__
         }
     else:
         response['data'] = 'Error occured during execution.'
@@ -51,6 +51,9 @@ def regularize_response(response):
             response['status_code'] = 200
         if isinstance(response['data'], QuerySet):
             response['data'] = serialize('json', response['data'])
+        if isinstance(response['data'], str) and not response['status_code'] == 200:
+            response['message'] = response['data']
+            response['data'] = None 
     else:
         try:
             err_msg = "View returned %s, which is not convertable to JSON"

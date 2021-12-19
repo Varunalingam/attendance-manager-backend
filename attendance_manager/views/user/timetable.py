@@ -17,5 +17,6 @@ class UserTimetableView(View):
         student = request.student
         today = timezone.now().date()
         course_ids = get_courses(student).values_list('course_id', flat=True)
-        timetable = TimeTable.objects.filter(course_id__in=course_ids,starttime__range=(datetime.combine(today, time.min), datetime.combine(today, time.max)))
+        timetable = TimeTable.objects.filter(course_id__in=course_ids,starttime__range=(datetime.combine(today, time.min), datetime.combine(today, time.max))).order_by('starttime')
+        timetable = timetable.values('timetable_id', 'starttime', 'endtime', 'course_id', 'status', 'course_id__course_name', 'course_id__course_code')
         return successful_response(timetable)

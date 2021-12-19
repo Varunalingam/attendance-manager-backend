@@ -35,6 +35,10 @@ class LoginRequestView(View):
 class LoginRequestVerifyView(View):
     def post(self, request):
         roll_number = request.POST.get('roll_number')
+        otp = request.POST.get('otp')
+        
+        if otp == None:
+            return invalid_params_response('OTP is a required field!')
 
         if roll_number == None:
             return invalid_params_response('Roll number is a required field!')
@@ -47,16 +51,11 @@ class LoginRequestVerifyView(View):
         
         student = Student.objects.get(roll_no = roll_number)
 
-        otp = request.POST.get('otp')
-        
-        if otp == None:
-            return invalid_params_response('OTP is a required field!')
-
         if not len(str(otp)) == 6:
             return invalid_params_response('OTP is a 6 digit AlphaNumerical string!')
 
         if otp == student.otp and timezone.now() < student.otp_timeout:
-            user = authenticate(username = student.roll_no, password="")
+            user = authenticate(username = student.roll_no, password=" ")
             token = Token.objects.get_or_create(user=user)
             student.otp_timeout = timezone.now()
             student.save()

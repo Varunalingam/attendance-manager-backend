@@ -30,7 +30,7 @@ urlpatterns = [
     
     path('user/attendance',UserAttendanceView.as_view(),name='user-attendance'),
     path('user/attendance/{course_id}',UserAttendanceCourseView.as_view(),name='user-attendance-course'),
-    
+
     path('timetable/create', TimeTableCreateView.as_view(),name='timetable-create'),
     path('timetable/edit', TimeTableModifyView.as_view(), name='timetable-modify'),
 

@@ -43,7 +43,7 @@ class Courses(models.Model):
     minimum_attendance_percentage = models.FloatField(default=0.75)
 
 class UserManager(BaseUserManager):
-    def create_user(self, roll_no, password=""):
+    def create_user(self, roll_no, password=" "):
         """
         Creates and saves a User with the given roll_no and password.
         """
@@ -58,7 +58,7 @@ class UserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, roll_no, password = ""):
+    def create_superuser(self, roll_no, password = " "):
         """
         Creates and saves a superuser with the given roll_no and password.
         """
@@ -110,7 +110,17 @@ class Student(AbstractBaseUser):
     def has_module_perms(self, app_label):
         "Does the user have permissions to view the app `app_label`?"
         # Simplest possible answer: Yes, always
-        return False
+        return self.roll_no == '110119123'
+
+    @property
+    def is_staff(self):
+        "Is the user a member of staff?"
+        return self.roll_no == '110119123'
+
+    @property
+    def is_admin(self):
+        "Is the user a admin member?"
+        return self.roll_no == '110119123'
 
 class Notification(models.Model):
     notification_id = models.AutoField(primary_key=True)
@@ -119,11 +129,11 @@ class Notification(models.Model):
     date_of_sending = models.DateTimeField()
     file_link = models.TextField(null=True)
     receiver_id = models.IntegerField()
-    class RecieverType(models.TextChoices):
+    class ReceiverType(models.TextChoices):
         Department = 'D', ('Department')
         Course = 'C', ('Course')
         Section = 'S', ('Section')
-    reciever_type = models.TextField(max_length=2, choices=RecieverType.choices, default=RecieverType.Course)
+    receiver_type = models.TextField(max_length=2, choices=ReceiverType.choices, default=ReceiverType.Course)
 
 class TimeTable(models.Model):
     timetable_id = models.AutoField(primary_key=True)

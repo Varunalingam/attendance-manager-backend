@@ -13,8 +13,8 @@ from attendance_manager.models import Courses, Notification, TimeTable
 class NotificationCreateView(View):
     def post(self, request):
         student = request.student
-        reciever_type = request.POST.get('reciever_type')
-        reciever_id = request.POST.get('reciever_id')
+        receiver_type = request.POST.get('receiver_type')
+        receiver_id = request.POST.get('receiver_id')
         title = request.POST.get('title')
         body = request.POST.get('body')
         file_link = request.POST.get('file_link')
@@ -25,19 +25,19 @@ class NotificationCreateView(View):
         title = str(title)
 
         try:
-            if reciever_type == Notification.RecieverType.Course.name:
-                course = Courses.objects.get(course_id=reciever_id)
-                reciever_type = Notification.RecieverType.Course
+            if receiver_type == Notification.ReceiverType.Course.name:
+                course = Courses.objects.get(course_id=receiver_id)
+                receiver_type = Notification.ReceiverType.Course
                 if not check_cr_permission_course(student, course):
                     raise Exception('No CR Permission')
-            elif reciever_type == Notification.RecieverType.Section.name:
-                reciever_type = Notification.RecieverType.Section
-                reciever_id = student.section_id
+            elif receiver_type == Notification.ReceiverType.Section.name:
+                receiver_type = Notification.ReceiverType.Section
+                receiver_id = student.section_id
                 if not check_cr_permission_section(student):
                     raise Exception('No CR Permission')
-            elif reciever_type == Notification.RecieverType.Department.name:
-                reciever_type = Notification.RecieverType.Department
-                reciever_id = student.department_id
+            elif receiver_type == Notification.ReceiverType.Department.name:
+                receiver_type = Notification.ReceiverType.Department
+                receiver_id = student.department_id
                 if not check_cr_permission_section(student):
                     raise Exception('No CR Permission')
             else:
@@ -45,7 +45,7 @@ class NotificationCreateView(View):
         except:
             return invalid_params_response('User does not have access to send notifications')
 
-        Notification.objects.create(title = title, message = body, reciever_type = reciever_type, reciever_id = reciever_id, date_of_sending = timezone.now(),file_link = file_link)
+        Notification.objects.create(title = title, message = body, receiver_type = receiver_type, receiver_id = receiver_id, date_of_sending = timezone.now(),file_link = file_link)
         return successful_response('Notification created successfully!')
 
 @method_decorator(RequiresTokenDecorator, name='dispatch')
@@ -65,14 +65,14 @@ class NotificationModifyView(View):
 
         try:
             notification = Notification.objects.get(notification_id = notification_id)
-            if notification.reciever_type == Notification.RecieverType.Course:
-                course = Courses.objects.get(course_id=notification.reciever_id)
+            if notification.receiver_type == Notification.ReceiverType.Course:
+                course = Courses.objects.get(course_id=notification.receiver_id)
                 if not check_cr_permission_course(student, course):
                     raise Exception('No CR Permission')
-            elif notification.reciever_type == Notification.RecieverType.Section and notification.reciever_id == student.section_id.section_id:
+            elif notification.receiver_type == Notification.ReceiverType.Section and notification.receiver_id == student.section_id.section_id:
                 if not check_cr_permission_section(student):
                     raise Exception('No CR Permission')
-            elif notification.reciever_type == Notification.RecieverType.Department and notification.reciever_id == student.department_id.department_id:
+            elif notification.receiver_type == Notification.ReceiverType.Department and notification.receiver_id == student.department_id.department_id:
                 if not check_cr_permission_section(student):
                     raise Exception('No CR Permission')
             else:

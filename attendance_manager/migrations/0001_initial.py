@@ -58,7 +58,7 @@ class Migration(migrations.Migration):
                 ('date_of_sending', models.DateTimeField()),
                 ('file_link', models.TextField(null=True)),
                 ('receiver_id', models.IntegerField()),
-                ('reciever_type', models.TextField(choices=[('D', 'Department'), ('C', 'Course'), ('S', 'Section')], default='C', max_length=2)),
+                ('receiver_type', models.TextField(choices=[('D', 'Department'), ('C', 'Course'), ('S', 'Section')], default='C', max_length=2)),
             ],
         ),
         migrations.CreateModel(
