@@ -10,13 +10,11 @@ from attendance_manager.helpers.response_helpers import invalid_params_response,
 class UserProfileView(View):
     def get(self, request):
         student = request.student
-        if (student.name == None):
-            return retry_with_response('Retry after creating the profile for the user')
         data = {
             'roll_number': student.roll_no,
             'name': student.name,
-            'department_name':student.department.name,
-            'section':student.section.name,
+            'department_name':student.department_id.department_name,
+            'section':student.section_id.section_name,
             'batch':student.batch.year 
         }
         return successful_response(data)

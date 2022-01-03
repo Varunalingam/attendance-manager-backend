@@ -26,10 +26,10 @@ urlpatterns = [
     path('user/notifications', UserNotificationView.as_view(), name='user-notification'),
     path('user/notifications/department', UserNotificationDepartmentView.as_view(), name='user-notification-department'),
     path('user/notifications/section', UserNotificationSectionView.as_view(), name='user-notification-section'),
-    path('user/notifications/course/{course_id}', UserNotificationCourseView.as_view(), name='user-notification-course'),
+    path('user/notifications/course/<course_id>', UserNotificationCourseView.as_view(), name='user-notification-course'),
     
     path('user/attendance',UserAttendanceView.as_view(),name='user-attendance'),
-    path('user/attendance/{course_id}',UserAttendanceCourseView.as_view(),name='user-attendance-course'),
+    path('user/attendance/<course_id>',UserAttendanceCourseView.as_view(),name='user-attendance-course'),
 
     path('timetable/create', TimeTableCreateView.as_view(),name='timetable-create'),
     path('timetable/edit', TimeTableModifyView.as_view(), name='timetable-modify'),

@@ -3,7 +3,7 @@ from django.views.generic import View
 from django.utils.decorators import method_decorator
 from attendance_manager.decorators.requires_token import RequiresTokenDecorator
 from attendance_manager.decorators.response import JsonResponseDecorator
-from attendance_manager.helpers.course_helpers import get_courses
+from attendance_manager.helpers.course_helpers import check_course, get_courses
 from attendance_manager.helpers.response_helpers import attendance_response, invalid_params_response
 from attendance_manager.models import Attendance, Courses, TimeTable
 
@@ -29,8 +29,7 @@ class UserAttendanceView(View):
 class UserAttendanceCourseView(View):
     def get(self, request, course_id):
         student=request.student
-        course_ids = get_courses(student).values_list('course_id')
-        if not course_id in course_ids:
+        if not check_course(student,course_id):
             return invalid_params_response('Course does not exist!')
         course = Courses.objects.get(course_id=course_id)
         return attendance_response(student, course)

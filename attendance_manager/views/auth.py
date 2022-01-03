@@ -1,9 +1,11 @@
 from django.views.generic import View
 from attendance_manager.decorators.response import JsonResponseDecorator
+from attendance_manager.helpers.attendance_helpers import generate_attendance
 from attendance_manager.helpers.auth_helpers import createOTP
+from attendance_manager.helpers.course_helpers import get_courses
 from attendance_manager.helpers.response_helpers import invalid_params_response, successful_response, unauthorized_response
 
-from attendance_manager.models import Student
+from attendance_manager.models import Courses, Student, TimeTable
 from django.utils.decorators import method_decorator
 from rest_framework.authtoken.models import Token
 
@@ -19,13 +21,16 @@ class LoginRequestView(View):
         if roll_number == None:
             return invalid_params_response('Roll number is a required field!')
 
-        if not str(roll_number).isnumeric() and not len(str(roll_number)) == 9:
+        if not str(roll_number).isnumeric() or not len(str(roll_number)) == 9:
             return invalid_params_response('Roll number is a 9 digit numerical string!')
 
         if not Student.objects.filter(roll_no = roll_number).exists():
             
             student = Student.objects.create_user(roll_no=roll_number)
             student.save()
+            course_id = get_courses(student).values_list('course_id',flat=True)
+            for course in course_id:
+                generate_attendance(student,Courses.objects.get(course_id = course))
             
         createOTP(roll_number)
         student = Student.objects.get(roll_no=roll_number)

@@ -1,0 +1,14 @@
+[
+      {
+        "model": "attendance_manager.Notification",
+        "pk": 1,
+        "fields": {
+            "notification_id":1,
+            "title":"Hellow",
+            "message":"Hi",
+            "date_of_sending":"2022-1-3T17:24:29.350352+06:30",
+            "receiver_id":1,
+            "receiver_type":"D"
+          }
+        }
+]

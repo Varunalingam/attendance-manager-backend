@@ -5,6 +5,8 @@ from django.db.models.query import QuerySet
 from django.http import JsonResponse
 from django.conf import settings
 
+import json
+
 logger = logging.getLogger('django')
 
 def exception_response(exception):
@@ -50,7 +52,7 @@ def regularize_response(response):
                 response = {'data': response}
             response['status_code'] = 200
         if isinstance(response['data'], QuerySet):
-            response['data'] = serialize('json', response['data'])
+            response['data'] = json.loads(serialize('json', response['data']))
         if isinstance(response['data'], str) and not response['status_code'] == 200:
             response['message'] = response['data']
             response['data'] = None 
@@ -79,6 +81,6 @@ def JsonResponseDecorator(view):
             response = exception_response(e)
 
         response = regularize_response(response)
-        return JsonResponse(response, status = response['status_code'])
+        return JsonResponse(response)
     # logger.info('JsonResponseDecorator: Successful')
     return wrapper

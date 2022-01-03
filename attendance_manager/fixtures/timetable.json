@@ -1,0 +1,36 @@
+[
+    {
+		"model": "attendance_manager.Timetable",
+		"pk": 1,
+		"fields": {
+			"timetable_id": 1,
+            "course_id": 1,
+            "status": "A",
+            "starttime": "2021-12-22T15:24:29.350352+06:30",
+            "endtime": "2021-12-22T16:24:29.350352+06:30"
+		}
+    },
+    {
+        "model": "attendance_manager.Timetable",
+		"pk": 2,
+		"fields": {
+			"timetable_id": 2,
+            "course_id": 2,
+            "status": "A",
+            "starttime": "2021-12-22T17:24:29.350352+06:30",
+            "endtime": "2021-12-22T18:24:29.350352+06:30"
+		}
+    }
+    ,
+    {
+        "model": "attendance_manager.Timetable",
+		"pk": 3,
+		"fields": {
+			"timetable_id": 2,
+            "course_id": 3,
+            "status": "A",
+            "starttime": "2021-12-22T17:24:29.350352+06:30",
+            "endtime": "2021-12-22T18:24:29.350352+06:30"
+		}
+    }
+]

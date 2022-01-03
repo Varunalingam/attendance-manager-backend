@@ -18,7 +18,7 @@ def getDepartmentFromRollNumber(rollnumber):
     return Department.objects.get(department_name=department_names[rollnumber[0:3]])
 
 def getBatchFromRollNumber(rollnumber):
-    return date(1900 + int(rollnumber[3:6]), 6, 1)
+    return date(1900 + int(rollnumber[3:6]) + 4, 6, 1)
 
 def getSectionFromRollNumber(rollnumber):
     single_section_departments = [
