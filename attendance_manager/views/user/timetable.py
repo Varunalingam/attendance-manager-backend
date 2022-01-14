@@ -20,7 +20,7 @@ from django.core.serializers.json import DjangoJSONEncoder
 class UserTimetableView(View):
     def get(self, request):
         student = request.student
-        today = timezone.now().date()
+        today = request.POST.get('date')
         course_ids = get_courses(student).values_list('course_id', flat=True)
         timetable = TimeTable.objects.filter(course_id__in=course_ids,starttime__range=(datetime.combine(today, time.min), datetime.combine(today, time.max))).order_by('starttime')
         timetable = timetable.values('timetable_id', 'starttime', 'endtime', 'course_id', 'status')

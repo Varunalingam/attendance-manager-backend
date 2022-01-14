@@ -165,5 +165,3 @@ class CourseStudents(models.Model):
     course_student_id = models.AutoField(primary_key=True)
     student_id = models.ForeignKey(Student, db_column='student_id', on_delete=models.CASCADE)
     course_id = models.ForeignKey(Courses, db_column='course_id', on_delete=models.CASCADE)
-
-    
